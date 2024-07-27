@@ -1,5 +1,4 @@
 use std::{
-    collections::{BinaryHeap, VecDeque},
     io::{self, Read},
     str::SplitAsciiWhitespace,
     usize::MAX,
@@ -13,12 +12,10 @@ use std::{
 // 새로운 집합에 대해서 y좌표 기준 정렬
 // 좌표를 y좌표에 대해 오름차순으로 탐색하여 두 좌표의 y축 방향 길이가 최소 길이 이내이면 최소길이 계산하여 두 집합의 합에 대한 최소 길이 계산
 
+// 7% 시간초과 -> 최소길이의 루트로 범위 비교했던 것을 제곱 결과 그대로 사용하여 비교하니 통과
+
 fn sq_dist((x1, y1): (isize, isize), (x2, y2): (isize, isize)) -> usize {
     ((x2 - x1).pow(2) + (y2 - y1).pow(2)) as usize
-}
-
-fn sqrt(dist: usize) -> isize {
-    (dist as f64).sqrt() as isize
 }
 
 fn divide_conquer(cord_x: &mut [(isize, isize)]) -> usize {
@@ -39,7 +36,6 @@ fn divide_conquer(cord_x: &mut [(isize, isize)]) -> usize {
     let lv = divide_conquer(&mut left_cord_x);
     let rv = divide_conquer(&mut right_cord_x);
     let mut min_dist = lv.min(rv);
-    let mut d = sqrt(min_dist);
 
     // println!("{cord_in_band:?}");
     let mut cord_y: Vec<(isize, isize)> = cord_x
